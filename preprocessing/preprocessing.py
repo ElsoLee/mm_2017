@@ -1,4 +1,4 @@
-from entities.schedules import Schedules
+from entities.schedule import Schedule
 from entities.aircraft import Aircraft
 
 def aircraft_preprocessing():
@@ -20,7 +20,7 @@ def schedule_preprocessing():
         flights = []
         for l in lines:
             items = l.split(',')
-            flights.append(Schedules(items))
+            flights.append(Schedule(items))
 
         return flights
 
@@ -41,6 +41,3 @@ if __name__ == '__main__':
 
         station_sink[(last_flight.plane_no, last_flight.arrive_airport)] = air.last_available_time + last_flight.duration
         print(station_sink)
-
-
-
