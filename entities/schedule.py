@@ -1,5 +1,5 @@
 
-class Schedules(object):
+class Schedule(object):
     def __init__(self, split_line):
         self.flight_no = split_line[0]
         self.departure_time = int(split_line[1])
@@ -12,4 +12,4 @@ class Schedules(object):
         self.duration = self.arrive_time - self.departure_time
 
     def __lt__(self, other):
-        return self.available_time < other.available_time
+        return self.arrive_time < other.arrive_time
