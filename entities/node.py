@@ -19,8 +19,8 @@ class Node(object):
         return self.segment_start_time < other.segment_start_time
 
     def print_information(self):
-        print 'node_id', self.node_id
-        print 'mark_time', timestamp_to_string(self.mark_time)
-        print 'segment_start_time', timestamp_to_string(self.segment_start_time)
-        print 'segment_end_time', timestamp_to_string(self.segment_end_time)
-        print 'station_name', self.station_name
+        print ('node_id', self.node_id)
+        print ('mark_time', timestamp_to_string(self.mark_time))
+        print ('segment_start_time', timestamp_to_string(self.segment_start_time))
+        print ('segment_end_time', timestamp_to_string(self.segment_end_time))
+        print ('station_name', self.station_name)

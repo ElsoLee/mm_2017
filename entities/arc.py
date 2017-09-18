@@ -11,7 +11,7 @@ class Arc(object):
         self.flight_id = flight_id
 
     def print_information(self):
-        print get_node_key(
+        print (get_node_key(
             self.source_node.station_name,
             self.source_node.segment_start_time,
             self.source_node.segment_end_time
@@ -19,4 +19,4 @@ class Arc(object):
             self.target_node.station_name,
             self.target_node.segment_start_time,
             self.target_node.segment_end_time
-        ) + '(' + timestamp_to_string(self.target_node.mark_time) + ')'
+        ) + '(' + timestamp_to_string(self.target_node.mark_time) + ')')

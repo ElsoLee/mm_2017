@@ -25,7 +25,7 @@ def schedule_preprocessing():
         return flights
 
 
-if __name__ == '__main__':
+def generate_sink_node():
     flights = schedule_preprocessing()
     aircrafts = aircraft_preprocessing()
 
@@ -39,5 +39,7 @@ if __name__ == '__main__':
         fls.sort()
         last_flight = fls[len(fls) - 1]
 
-        station_sink[(last_flight.plane_no, last_flight.arrive_airport)] = air.last_available_time + last_flight.duration
-        print(station_sink)
+        station_sink[
+            (last_flight.plane_no, last_flight.arrive_airport)] = air.last_available_time + last_flight.duration
+
+    return station_sink
