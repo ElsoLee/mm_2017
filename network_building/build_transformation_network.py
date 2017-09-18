@@ -81,19 +81,26 @@ def initialize_network(schedule_list, recovery_start_time, recovery_end_time, st
 def build_transformation_network(
         previous_count,
         schedule_list,
-        sink_node_dictionary,
+        sink_node_information_dictionary,
         marked_node_dictionary,
         turnaround_time,
         cost_function,
         station_time_band):
+    def node_cmp(source_node, target_node):
+        if source_node.mark_time > target_node.mark_time:
+            return 1
+        if source_node.mark_time < target_node.mark_time:
+            return -1
+        return 0
+
     count = previous_count
     node_dictionary = marked_node_dictionary
     node_list = [marked_node_dictionary[node_key] for node_key in marked_node_dictionary]
-    node_list.sort()
+    sorted(node_list, cmp=node_cmp)
     arc_list = []
     cost_dictionary = {}
     while node_list:
-        node_list.sort()
+        sorted(node_list, cmp=node_cmp)
         source_node = node_list[0]
         del node_list[0]
         source_mark_time = source_node.mark_time
@@ -106,7 +113,8 @@ def build_transformation_network(
                 duration = schedule.duration
                 departure_time = max(source_mark_time, schedule.departure_time)
                 available_time = departure_time + duration + turnaround_time
-                if available_time > sink_node_dictionary[(plane_id, target_station)]:
+                sink_node_border = sink_node_information_dictionary[(plane_id, target_station)]
+                if available_time > sink_node_border:
                     continue
                 segment_start_time, segment_end_time = get_segment_time(
                     time=available_time,
@@ -156,7 +164,7 @@ if __name__ == '__main__':
             'BOI',
             'SEA',
             0,
-            0,
+            1,
         ])
     )
     schedule_list.append(
@@ -167,7 +175,7 @@ if __name__ == '__main__':
             'SEA',
             'GEG',
             0,
-            0,
+            1,
         ])
     )
     schedule_list.append(
@@ -178,7 +186,7 @@ if __name__ == '__main__':
             'GEG',
             'SEA',
             0,
-            0,
+            1,
         ])
     )
     schedule_list.append(
@@ -189,7 +197,7 @@ if __name__ == '__main__':
             'SEA',
             'BOI',
             0,
-            0,
+            1,
         ])
     )
     schedule_list.append(
@@ -200,7 +208,7 @@ if __name__ == '__main__':
             'SEA',
             'BOI',
             0,
-            0,
+            2,
         ])
     )
     schedule_list.append(
@@ -211,7 +219,7 @@ if __name__ == '__main__':
             'BOI',
             'SEA',
             0,
-            0,
+            2,
         ])
     )
     schedule_list.append(
@@ -222,7 +230,7 @@ if __name__ == '__main__':
             'SEA',
             'GEG',
             0,
-            0,
+            2,
         ])
     )
     schedule_list.append(
@@ -233,7 +241,7 @@ if __name__ == '__main__':
             'GEG',
             'SEA',
             0,
-            0,
+            2,
         ])
     )
     schedule_list.append(
@@ -244,7 +252,7 @@ if __name__ == '__main__':
             'GEG',
             'PDX',
             0,
-            0,
+            3,
         ])
     )
     schedule_list.append(
@@ -255,7 +263,7 @@ if __name__ == '__main__':
             'PDX',
             'GEG',
             0,
-            0,
+            3,
         ])
     )
     schedule_list.append(
@@ -266,7 +274,7 @@ if __name__ == '__main__':
             'GEG',
             'PDX',
             0,
-            0,
+            3,
         ])
     )
     schedule_list.append(
@@ -277,7 +285,7 @@ if __name__ == '__main__':
             'PDX',
             'GEG',
             0,
-            0,
+            3,
         ])
     )
     turnaround_time = 40 * 60
@@ -303,10 +311,23 @@ if __name__ == '__main__':
     node_dictionary, arc_list, cost_dictionary = build_transformation_network(
         previous_count=count,
         schedule_list=schedule_list,
-        sink_node_dictionary={},
+        sink_node_information_dictionary={
+            (1, 'BOI'): string_to_timestamp('2017-9-17 23:59'),
+            (1, 'SEA'): string_to_timestamp('2017-9-17 23:59'),
+            (1, 'GEG'): string_to_timestamp('2017-9-17 23:59'),
+            (1, 'PDX'): string_to_timestamp('2017-9-17 23:59'),
+            (2, 'BOI'): string_to_timestamp('2017-9-17 23:59'),
+            (2, 'SEA'): string_to_timestamp('2017-9-17 23:59'),
+            (2, 'GEG'): string_to_timestamp('2017-9-17 23:59'),
+            (2, 'PDX'): string_to_timestamp('2017-9-17 23:59'),
+            (3, 'BOI'): string_to_timestamp('2017-9-17 23:59'),
+            (3, 'SEA'): string_to_timestamp('2017-9-17 23:59'),
+            (3, 'GEG'): string_to_timestamp('2017-9-17 23:59'),
+            (3, 'PDX'): string_to_timestamp('2017-9-17 23:59'),
+        },
         marked_node_dictionary=marked_node_dictionary,
         turnaround_time=turnaround_time,
         cost_function=lambda x: x,
         station_time_band=station_time_band
     )
-    # draw_figure(arc_list, 30, ['BOI', 'SEA', 'GEG', 'PDX'])
+    draw_figure(arc_list, 30, ['BOI', 'SEA', 'GEG', 'PDX'])
