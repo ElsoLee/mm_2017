@@ -9,7 +9,7 @@ from network_building.build_network import build_network
 from network_building.utility import *
 
 
-def initialize_network(schedule_list, recovery_start_time, recovery_end_time, station_time_band):
+def initialize_network(schedule_list, recovery_start_time, recovery_end_time, station_time_band, turnaround_time):
     node_dictionary = {}
     station_list = []
     for schedule in schedule_list:
@@ -310,7 +310,8 @@ if __name__ == '__main__':
         schedule_list=schedule_list,
         recovery_start_time=string_to_timestamp('2017-9-17 13:10'),
         recovery_end_time=string_to_timestamp('2017-9-17 23:59'),
-        station_time_band=station_time_band
+        station_time_band=station_time_band,
+        turnaround_time=turnaround_time
     )
     node_dictionary, arc_list, cost_dictionary = build_transformation_network(
         previous_count=count,
