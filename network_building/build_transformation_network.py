@@ -52,6 +52,8 @@ def initialize_network(schedule_list, recovery_start_time, recovery_end_time, st
             segment_start_time=segment_start_time,
             segment_end_time=segment_end_time
         )
+        if source_node_key not in node_dictionary:
+            continue
         mark_time = node_dictionary[source_node_key].mark_time
         node_dictionary[source_node_key].mark_time = min(mark_time, departure_time)
         target_station_name = schedule.arrive_airport
@@ -65,6 +67,8 @@ def initialize_network(schedule_list, recovery_start_time, recovery_end_time, st
             segment_start_time=segment_start_time,
             segment_end_time=segment_end_time
         )
+        if target_node_key not in node_dictionary:
+            continue
         mark_time = node_dictionary[target_node_key].mark_time
         node_dictionary[target_node_key].mark_time = min(mark_time, available_time)
     return_node_dictionary = {}
