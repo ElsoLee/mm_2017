@@ -1,8 +1,9 @@
 from entities.schedule import Schedule
 from entities.aircraft import Aircraft
+import os
 
 def aircraft_preprocessing():
-    with open('../data/Aircrafts.csv', 'r') as f:
+    with open('./data/Aircrafts.csv', 'r') as f:
         lines = f.readlines()
 
         aircrafts = []
@@ -14,13 +15,14 @@ def aircraft_preprocessing():
 
 
 def schedule_preprocessing():
-    with open('../data/Schedules.csv', 'r') as f:
+    with open('./data/Schedules.csv', 'r') as f:
         lines = f.readlines()
 
         flights = []
         for l in lines:
             items = l.split(',')
-            flights.append(Schedule(items))
+            if items[5] == '9':
+                flights.append(Schedule(items))
 
         return flights
 

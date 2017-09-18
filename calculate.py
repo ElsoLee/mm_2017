@@ -64,7 +64,7 @@ if __name__ == '__main__':
     node_dictionary, arc_list, cost_dictionary = build_transformation_network(
         previous_count=count,
         schedule_list=schedule_list,
-        sink_node_dictionary=generate_sink_node(),
+        sink_node_information_dictionary=generate_sink_node(),
         marked_node_dictionary=marked_node_dictionary,
         turnaround_time=config.turnaround_time,
         cost_function=lambda x: x,

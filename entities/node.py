@@ -7,12 +7,19 @@ from network_building.utility import *
 
 
 class Node(object):
-    def __init__(self, station_name, node_id=0, mark_time=2 ** 31 - 1, segment_start_time=0, segment_end_time=0):
+    def __init__(self,
+                 station_name,
+                 node_id=0,
+                 mark_time=2 ** 31 - 1,
+                 segment_start_time=0,
+                 segment_end_time=0,
+                 is_sink_node=False):
         self.node_id = node_id
         self.mark_time = mark_time
         self.segment_start_time = segment_start_time
         self.segment_end_time = segment_end_time
         self.station_name = station_name
+        self.is_sink_node = is_sink_node
         self.plane_id_list = []
 
     def __lt__(self, other):
