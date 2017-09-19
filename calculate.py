@@ -110,6 +110,8 @@ if __name__ == '__main__':
         cost_function=lambda x: x,
         station_time_band=config.station_time_band
     )
+
+    print cost_dictionary
     solve_values(node_dictionary, arc_list, cost_dictionary, schedule_list)
 
 
