@@ -73,12 +73,12 @@ def initialize_network(schedule_list, recovery_start_time, recovery_end_time, st
         node_dictionary[target_node_key].mark_time = min(mark_time, available_time)
     return_node_dictionary = {}
     count = 1
-    for node in node_dictionary:
-        if node_dictionary[node].mark_time < 2 ** 31 - 1:
-            node = node_dictionary[node]
+    for node_key in node_dictionary:
+        if node_dictionary[node_key].mark_time < 2 ** 31 - 1:
+            node = node_dictionary[node_key]
             node.node_id = count
             count += 1
-            return_node_dictionary[node] = node
+            return_node_dictionary[node_key] = node
     return return_node_dictionary, count
 
 
@@ -100,11 +100,11 @@ def build_transformation_network(
     count = previous_count
     node_dictionary = marked_node_dictionary
     node_list = [marked_node_dictionary[node_key] for node_key in marked_node_dictionary]
-    sorted(node_list, cmp=node_cmp)
+    node_list = sorted(node_list, cmp=node_cmp)
     arc_list = []
     cost_dictionary = {}
     while node_list:
-        sorted(node_list, cmp=node_cmp)
+        node_list = sorted(node_list, cmp=node_cmp)
         source_node = node_list[0]
         del node_list[0]
         source_mark_time = source_node.mark_time
@@ -124,7 +124,14 @@ def build_transformation_network(
                     time=available_time,
                     station_time_band=station_time_band
                 )
-                target_node_key = get_node_key(target_station, segment_start_time, segment_end_time)
+                target_node_key = get_node_key(
+                    station_name=target_station,
+                    segment_start_time=segment_start_time,
+                    segment_end_time=segment_end_time
+                )
+                if target_node_key == 'SEA:09-17 22:30-09-17 22:59':
+                    if target_node_key in node_dictionary:
+                        print 1
                 if target_node_key not in node_dictionary:
                     new_target_node = Node(
                         node_id=count,
@@ -148,7 +155,6 @@ def build_transformation_network(
                         if node_list[i].node_id == node_dictionary[target_node_key].node_id:
                             node_list[i].mark_time = mark_time
                             node_list[i].plane_id_list.append(plane_id)
-                source_node.plane_id_list.append(plane_id)
                 arc_list.append(Arc(source_node, node_dictionary[target_node_key], flight_id))
                 cost_dictionary[(
                     source_node.node_id,
@@ -313,6 +319,7 @@ if __name__ == '__main__':
         station_time_band=station_time_band,
         turnaround_time=turnaround_time
     )
+
     node_dictionary, arc_list, cost_dictionary = build_transformation_network(
         previous_count=count,
         schedule_list=schedule_list,
@@ -335,4 +342,11 @@ if __name__ == '__main__':
         cost_function=lambda x: x,
         station_time_band=station_time_band
     )
+
+    for node in node_dictionary:
+        node_dictionary[node].print_information()
+    print len(node_dictionary)
+    for cost in cost_dictionary:
+        print cost, cost_dictionary[cost]
+
     draw_figure(arc_list, 30, ['BOI', 'SEA', 'GEG', 'PDX'])

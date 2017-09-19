@@ -27,7 +27,8 @@ class Node(object):
 
     def print_information(self):
         print 'node_id', self.node_id
-        print 'mark_time', timestamp_to_string(self.mark_time)
-        print 'segment_start_time', timestamp_to_string(self.segment_start_time)
-        print 'segment_end_time', timestamp_to_string(self.segment_end_time)
-        print 'station_name', self.station_name
+        # print 'mark_time', timestamp_to_string(self.mark_time)
+        # print 'segment_start_time', timestamp_to_string(self.segment_start_time)
+        # print 'segment_end_time', timestamp_to_string(self.segment_end_time)
+        # print 'station_name', self.station_name
+        print 'key', get_node_key(self.station_name, self.segment_start_time, self.segment_end_time)
