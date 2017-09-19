@@ -9,7 +9,7 @@ from network_building.build_network import build_network
 from network_building.utility import *
 
 
-def initialize_network(schedule_list, recovery_start_time, recovery_end_time, station_time_band):
+def initialize_network(schedule_list, recovery_start_time, recovery_end_time, station_time_band, turnaround_time):
     node_dictionary = {}
     station_list = []
     for schedule in schedule_list:
@@ -117,6 +117,8 @@ def build_transformation_network(
                 duration = schedule.duration
                 departure_time = max(source_mark_time, schedule.departure_time)
                 available_time = departure_time + duration + turnaround_time
+                if (plane_id, target_station) not in sink_node_information_dictionary:
+                    continue
                 sink_node_border = sink_node_information_dictionary[(plane_id, target_station)]
                 if available_time > sink_node_border:
                     continue
@@ -310,7 +312,8 @@ if __name__ == '__main__':
         schedule_list=schedule_list,
         recovery_start_time=string_to_timestamp('2017-9-17 13:10'),
         recovery_end_time=string_to_timestamp('2017-9-17 23:59'),
-        station_time_band=station_time_band
+        station_time_band=station_time_band,
+        turnaround_time=turnaround_time
     )
     node_dictionary, arc_list, cost_dictionary = build_transformation_network(
         previous_count=count,
